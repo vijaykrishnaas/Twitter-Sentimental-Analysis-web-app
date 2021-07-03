@@ -7,8 +7,9 @@ from joblib import load
 cwd = os.getcwd()
 
 # Loads the ML model
-clf = load(cwd + "\\sentiment\\SVMModel.joblib")
+clf = load(cwd + "\\sentiment\\MLModel\\SVMModel.joblib")
 print("ML Model Loaded!")
+
 
 def predict(tweet):
     """
@@ -47,7 +48,8 @@ def polarize(tweet):
         a pandas Series which contains subjectivity and polarity of the tweet
     """
     blob = textblob.TextBlob(tweet)
-    return pd.Series([blob.sentiment.subjectivity,blob.sentiment.polarity])
+    return pd.Series([blob.sentiment.subjectivity, blob.sentiment.polarity])
+
 
 def analyse_sentiment(df):
     """
@@ -61,11 +63,11 @@ def analyse_sentiment(df):
     ------
     df
         a DataFrame with predicted results
-        
+
     List 
         a list of python dictionaries for template view purpose
     """
-    df[["subjectivity","polarity"]] = df["processed_tweet"].apply(polarize)
-    df[["sentiment","Analysis"]] = df["processed_tweet"].apply(predict)
+    df[["subjectivity", "polarity"]] = df["processed_tweet"].apply(polarize)
+    df[["sentiment", "Analysis"]] = df["processed_tweet"].apply(predict)
     print("Tweet Analysis Completed!")
-    return df,df.to_dict('records')
+    return (df, df.to_dict('records'))

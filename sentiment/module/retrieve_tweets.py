@@ -11,6 +11,7 @@ consumer_secret = os.environ.get("CONSUMER_SECRET")
 access_token = os.environ.get("ACCESS_TOKEN")
 access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
 
+
 def auth():
     """
     A Authentication function which makes authentication with Twitter API using twitter application key and token credentials.
@@ -27,10 +28,10 @@ def auth():
     try:
         # Create the authentication object
         authenticate = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        # Set the access token and access token secret 
-        authenticate.set_access_token(access_token, access_token_secret) 
+        # Set the access token and access token secret
+        authenticate.set_access_token(access_token, access_token_secret)
         # Creating the API object while passing in auth information
-        api = tweepy.API(authenticate, wait_on_rate_limit = True) 
+        api = tweepy.API(authenticate, wait_on_rate_limit=True)
         print("Authentication Successful!")
         return api
     except:
@@ -52,15 +53,15 @@ def isUnderLimit(api):
     """
     limit = False
     # Using Twitter API makes a request for check remaining rate_limit
-    api_limit = api.rate_limit_status() 
+    api_limit = api.rate_limit_status()
     app_limit_status = api_limit['resources']['application']['/application/rate_limit_status']['remaining']
     search_limit_status = api_limit['resources']['search']['/search/tweets']['remaining']
-    print("Application Limit Status: ",app_limit_status)
-    print("Search Limit Status: ",search_limit_status)
+    print("Application Limit Status: ", app_limit_status)
+    print("Search Limit Status: ", search_limit_status)
 
-    if( app_limit_status >= 60 and search_limit_status >= 60 ):
+    if(app_limit_status >= 60 and search_limit_status >= 60):
         limit = True
-    
+
     return limit
 
 
@@ -82,9 +83,13 @@ def retrieve_tweets(keyword, tillDate):
     if API and isUnderLimit(API):
         try:
             if tillDate == "":
-                raw_tweets = API.search(keyword+" -filter:retweets",count=100,lang='en', tweet_mode="extended")  # using Twitter API makes a keyword search
+                # using Twitter API makes a keyword search
+                raw_tweets = API.search(
+                    keyword+" -filter:retweets", count=100, lang='en', tweet_mode="extended")
             else:
-                raw_tweets = API.search(keyword+" -filter:retweets",count=100,lang='en', until=tillDate, tweet_mode="extended")  # using Twitter API makes a keyword search
+                # using Twitter API makes a keyword search
+                raw_tweets = API.search(
+                    keyword+" -filter:retweets", count=100, lang='en', until=tillDate, tweet_mode="extended")
             print("Retrieved tweets successfully!")
             return raw_tweets
         except:

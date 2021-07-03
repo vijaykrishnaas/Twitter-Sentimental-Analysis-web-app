@@ -1,6 +1,8 @@
 venv/
 .vscode/
 pyvenv.cfg
+db.sqlite3
 sentiment/__pycache__/*.pyc
+sentiment/module/__pycache__/*.pyc
 sentiment/migrations/__pycache__/*.pyc
 twitterSentimentApp/__pycache__/*.pyc
