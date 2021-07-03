@@ -2,3 +2,6 @@ Include/
 Lib/
 Scripts/
 .vscode/
+pyvenv.cfg
+sentiment/__pycache__/*.pyc
+twitterSentimentApp/__pycache__/*.pyc
