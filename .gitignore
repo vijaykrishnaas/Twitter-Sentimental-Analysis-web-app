@@ -1,7 +1,6 @@
-Include/
-Lib/
-Scripts/
+venv/
 .vscode/
 pyvenv.cfg
 sentiment/__pycache__/*.pyc
+sentiment/migrations/__pycache__/*.pyc
 twitterSentimentApp/__pycache__/*.pyc

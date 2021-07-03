@@ -1,9 +1,13 @@
 import textblob
+import os
 import pandas as pd
 from joblib import load
 
+# Get the current working directory
+cwd = os.getcwd()
+
 # Loads the ML model
-clf = load("C:/Users/Welcome/Desktop/final year project/twitterSentimentApp/sentiment/SVMModel.joblib")
+clf = load(cwd + "\\sentiment\\SVMModel.joblib")
 print("ML Model Loaded!")
 
 def predict(tweet):
