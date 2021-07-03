@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How-To</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/mystyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/icons-1.4.0/font/bootstrap-icons.css' %}">
+    <script src="{% static 'sentiment/js/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/popper.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/bootstrap.min.js' %}"></script>  
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark my_background">
+            <a class="navbar-brand" href="{% url 'sentiment:home' %}"><i class="bi bi-twitter pr-2"></i>Twitter Sentiment Analysis</a>
+            <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="my-nav" class="collapse navbar-collapse ">
+                <ul class="navbar-nav ml-auto pr-3">
+                    <li class="nav-item my_hover">
+                        <a class="nav-link" href="{% url 'sentiment:home' %}" tabindex="-1"><i class="bi bi-house-fill pr-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item my_hover">
+                        <a class="nav-link" href="{% url 'sentiment:about' %}" tabindex="-1"><i class="bi bi-info-circle-fill pr-1"></i>About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="jumbotron">
+            <p class="h4 text-center text-muted">SENTIMENT ANALYSIS ON TWITTER DATA USING
+                MACHINE LEARNING ALGORITHMS</p>
+            <hr class="my-4">
+            <h4 class="font-italic">Hello, from Team!</h4>
+        </div>
+    </main>
+    <footer class="footer fixed-bottom my_background">
+        <div class="container">
+            <p class="lead text-center pt-1 text-light">Thanks for Visiting us!</p>
+        </div>
+    </footer>
+</body>
+</html>

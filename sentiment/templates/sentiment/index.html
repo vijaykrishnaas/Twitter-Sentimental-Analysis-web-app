@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Sentiment Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/mystyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/icons-1.4.0/font/bootstrap-icons.css' %}">
+    <script type="text/javascript" src="{% static 'sentiment/js/index.js' %}"></script>
+    <script src="{% static 'sentiment/js/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/popper.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/bootstrap.min.js' %}"></script>  
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark my_background">
+            <a class="navbar-brand" href="{% url 'sentiment:home' %}"><i class="bi bi-twitter pr-2"></i>Twitter Sentiment Analysis</a>
+            <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="my-nav" class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto pr-3" id="navigation">
+                    <li class="nav-item my_hover">
+                        <a class="nav-link" href="{% url 'sentiment:about' %}" tabindex="-1"><i class="bi bi-info-circle-fill pr-1"></i>About</a>
+                    </li>
+                    <li class="nav-item my_hover">
+                        <a class="nav-link" href="{% url 'sentiment:how_to' %}" tabindex="-1"><i class="bi bi-journal-text pr-1"></i>How to</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div id="loading" style="display: none;">
+        <img class="animated-gif" src="{% static 'sentiment/img/loadingimage.gif' %}" alt="">
+        <p class="blockquote">Loading...</p>
+    </div>
+<div id="content">
+    <main>
+        <div class="jumbotron m-auto h-100">
+            <p class="display-4 text-center text-secondary">Welcome!</p>
+        </div>
+
+        <div class="container">
+            <div class="row h-100 pt-5 ml-5">
+                <div class="col-1"></div>
+                <div class="col-11">
+                    <form action="{% url 'sentiment:searchQuery' %}" method="GET" id="searchForm">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                   <label class="text-muted" for="searchQuery"><em> Enter your keyword: </em><i class="bi bi-asterisk pl-2" style="font-size: 0.6rem;"></i></label>
+                                    <input type="search" class="form-control" onkeyup="EnableDisable(this)" placeholder="search here..." id="searchQuery" name="query" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label class="text-muted" for="inputDate"><em> Tweets Before: (optional) </em></label>
+                                    <select class="custom-select" name="date" id="inputDate">
+                                      {% for i in dates %} 
+                                      <option value="{{i}}">{{i}}</option>
+                                      {% endfor %}
+                                    </select>
+                                  </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group border-0" style="margin-top: 2em;">
+                                    <button id="searchButton" type="submit" class="btn my_button" disabled="disabled" onclick="preloader()">
+                                        <i class="bi bi-search"></i>
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+    <footer class="footer fixed-bottom my_background">
+        <div class="container">
+            <p class="lead text-center pt-1 text-light">Thanks for Visiting us!</p>
+        </div>
+    </footer>
+</body>
+</html>
