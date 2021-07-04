@@ -1,10 +1,6 @@
 import tweepy
 import os
 from django.http import HttpResponse
-os.environ["CONSUMER_KEY"] = 'DxZRh6R8M7cyeIw3pT6sNQfRJ'
-os.environ["CONSUMER_SECRET"] = 'GbHpwceOO3OC4IAqORM1ZXgyCAMTHX75y9ivccN45HT7GOvQAJ'
-os.environ["ACCESS_TOKEN"] = '974107707870298113-nyTU6YEmoZILnr0b4oYcNH61Z8wOcOT'
-os.environ["ACCESS_TOKEN_SECRET"] = 'Is0BEuZtH3XXxRepCBJSDQibfgAO1gcrFQn9cU4PARWlu'
 
 consumer_key = os.environ.get("CONSUMER_KEY")
 consumer_secret = os.environ.get("CONSUMER_SECRET")
