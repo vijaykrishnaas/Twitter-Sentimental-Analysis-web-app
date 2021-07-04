@@ -7,6 +7,9 @@ from .analyse_sentiment import analyse_sentiment
 from .generate_results import generate
 from .export_results import export_csv
 
+# import forms
+from ..forms import SearchEntriesForm
+
 date_list = []
 
 
@@ -23,6 +26,28 @@ def getDateList():
 
 def clearDateList():
     date_list.clear()
+
+
+def constructFormData(request):
+    data = dict()
+    data["search_query"] = request.GET['query']
+    if request.GET['date']:
+        data["query_date"] = request.GET['date']
+    else:
+        data["query_date"] = dt.date.today().strftime('%Y-%m-%d')
+    data["search_time"] = dt.datetime.now().strftime("%H:%M:%S")
+    data["search_date"] = dt.date.today().strftime('%Y-%m-%d')
+    data["user_host"] = request.headers._store["host"]
+    data["user_agent"] = request.headers._store["user-agent"]
+
+    return data
+
+
+def saveSearchQuery(request):
+    data = constructFormData(request)
+    form = SearchEntriesForm(data)
+    if form.is_valid():
+        form.save()
 
 
 def processSearchQuery(request):
@@ -45,6 +70,8 @@ def processSearchQuery(request):
         result["subject_chart"] = charts[3]
         result["word_tags"] = charts[4]
         result["tweets"] = charts[5]
+
+    saveSearchQuery(request)
 
     return result
 
