@@ -34,11 +34,13 @@ html, body {
 .my_hover{
     text-decoration: none;
     border-bottom: 4px solid transparent;
+    transition: border-bottom 0.9s ease;
 }
 
 .my_hover:hover {
     display: inline-block;
     border-bottom:4px solid #fff;
+    font-weight: 500;
 }
 
 .nav-pills .nav-item .nav-link, .nav-pills{

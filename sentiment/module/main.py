@@ -30,9 +30,9 @@ def clearDateList():
 
 def constructFormData(request):
     data = dict()
-    data["search_query"] = request.GET['query']
-    if request.GET['date']:
-        data["query_date"] = request.GET['date']
+    data["search_query"] = request.POST['query']
+    if request.POST['date']:
+        data["query_date"] = request.POST['date']
     else:
         data["query_date"] = dt.date.today().strftime('%Y-%m-%d')
     data["search_time"] = dt.datetime.now().strftime("%H:%M:%S")
@@ -54,8 +54,8 @@ def processSearchQuery(request):
     clearDateList()
 
     result = dict()
-    result["keyword"] = request.GET['query']
-    result["date"] = request.GET['date']
+    result["keyword"] = request.POST['query']
+    result["date"] = request.POST['date']
 
     if result["keyword"]:
         raw_tweets = retrieve_tweets(result["keyword"], result["date"])
