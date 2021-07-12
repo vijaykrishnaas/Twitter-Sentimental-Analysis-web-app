@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Sentiment Analysis</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'sentiment/img/favicon/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/mystyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/icons-1.4.0/font/bootstrap-icons.css' %}">
+    <script type="text/javascript" src="{% static 'sentiment/js/index.js' %}"></script>
+    <script src="{% static 'sentiment/js/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/popper.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/bootstrap.min.js' %}"></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark my_background">
+            <a class="navbar-brand" href="{% url 'sentiment:home' %}"><i class="bi bi-twitter h4 pr-2"></i>Twitter
+                Sentiment Analysis</a>
+            <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="my-nav" class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto pr-3" id="navigation">
+                    <li class="nav-item my_hover">
+                        <a class="nav-link" href="{% url 'sentiment:about' %}" tabindex="-1"><i
+                                class="bi bi-info-circle-fill pr-1"></i>About</a>
+                    </li>
+                    <li class="nav-item my_hover">
+                        <a class="nav-link" href="{% url 'sentiment:how_to' %}" tabindex="-1"><i
+                                class="bi bi-journal-text pr-1"></i>How to</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div id="loading">
+        <img class="animated-gif" src="{% static 'sentiment/img/loadingimage.gif' %}" alt="">
+        <p class="blockquote">Loading...</p>
+        <p class="blockquote">Please wait for 20 seconds</p>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <footer class="footer fixed-bottom my_background">
+        <div class="container">
+            <p class="lead text-center pt-1 text-light">Thanks for Visiting us!</p>
+        </div>
+    </footer>
+    <script type="text/javascript">
+        var styles = {
+            "display": "block",
+            "width": "100%",
+            "height": "100%",
+            "margin": "auto",
+            "position": "absolute",
+            "top": "45%",
+            "text-align": "center"
+        }
+        document.documentElement.style.overflowY = "hidden";
+        document.body.style.overflowY = "hidden";
+        var obj = document.getElementById("loading");
+        Object.assign(obj.style, styles);
+    </script>
+</body>
+
+</html>
