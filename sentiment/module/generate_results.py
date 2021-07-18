@@ -6,12 +6,19 @@ import numpy as np
 import plotly
 import plotly.graph_objects as go
 import plotly.express as px
+import asyncio
 
 # Get the current working directory
 cwd = os.getcwd()
 
+from channels.layers import get_channel_layer
 
-def generate(df, hashtags_count):
+async def send_message(status):
+    channel_layer = get_channel_layer()
+    await channel_layer.group_send("status", {"type": "status.update", "text": status})
+
+
+async def generate(df, hashtags_count):
     """
     A Helper function which takes the analysed data and hashtags count data to generate interactive visualizations.
 
@@ -35,10 +42,22 @@ def generate(df, hashtags_count):
     print("Hashtag count Chart Generated!")
     html_subject = generate_subject_chart(df)
     print("Subjectivity-Polarity Chart Generated!")
+
+    status = {"statusMsg": "Chart Generation Completed",
+              "step": "4", "total": "5"}
+    await send_message(status)
+
     word_clouds = word_cloud(df)
     print("Word Cloud Generated!")
+
+    status = {"statusMsg": "Word Cloud Generation Completed",
+              "step": "5", "total": "5"}
+    await send_message(status)
+
     tweets = generate_tweets(df)
     print("Results Generated!")
+    await asyncio.sleep(0.4)
+
     return (html_pie, html_timebar, html_hashtag_count, html_subject, word_clouds, tweets)
 
 

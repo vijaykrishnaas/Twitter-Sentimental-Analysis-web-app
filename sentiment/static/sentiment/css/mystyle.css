@@ -1,37 +1,67 @@
-html, body { 
-    max-height: 100%;
-    max-width: 100%;
+body {
+    height: 100vh;
+    width: 100vw;
     overflow-x: hidden;
- }
-
-.preloader{
-    display: block;
-    width : 100%;
-    height : 100%;
-    margin : auto;
-    position : absolute;
-    top : 45%;
-    text-align :center;
 }
 
+#homescreen {
+    overflow-y: hidden;
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
 
-.my_background{
+#initSearch{
+    border-width: 2px !important;
+}
+
+#initSearch:hover{
+    color: #1DA1F2 !important;
+}
+
+.preloader {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    position: absolute;
+    top: 45%;
+    text-align: center;
+}
+
+.my_background {
     background-color: #1DA1F2;
 }
 
-.my_button, .my_link{
+.btn-outline-background {
+    color: #1DA1F2;
+    background-color: transparent;
+    background-image: none;
+    border-color: #1DA1F2;
+}
+
+.btn-outline-background:hover{
+    color: white;
+    background-color: #1DA1F2;
+}
+
+.my_button, .my_link {
     color: rgba(58, 110, 117, 0.527);
 }
 
-.export_button{
+.export_button {
     background-color: #1DA1F2;
     color: whitesmoke;
 }
-.export_button:hover{
+
+.export_button:hover {
     background: #274d8a;
     color: whitesmoke;
 }
-.my_hover{
+
+.my_hover {
     text-decoration: none;
     border-bottom: 4px solid transparent;
     transition: border-bottom 0.9s ease;
@@ -39,19 +69,19 @@ html, body {
 
 .my_hover:hover {
     display: inline-block;
-    border-bottom:4px solid #fff;
+    border-bottom: 4px solid #fff;
     font-weight: 500;
 }
 
-.nav-pills .nav-item .nav-link, .nav-pills{
-    font-family:courier;
-    color:#1DA1F2;
+.nav-pills .nav-item .nav-link, .nav-pills {
+    font-family: courier;
+    color: #1DA1F2;
 }
 
-.nav-pills .nav-item.show .nav-link, .nav-pills{
+.nav-pills .nav-item.show .nav-link, .nav-pills {
     padding: 0.5em;
-    font-family:courier;
-    color:wheat;
+    font-family: courier;
+    color: wheat;
 }
 
 .nav-pills .nav-item.show .nav-link, .nav-pills .nav-link:hover {
@@ -63,16 +93,21 @@ html, body {
 .nav-pills .nav-item.show .nav-link, .nav-pills .nav-link.active {
     background: #1DA1F2;
     color: whitesmoke;
-  }
-
-.nav-tabs .nav-link, .nav-tabs{
-    font-family:courier;
-    color:#1DA1F2;
 }
 
+.nav-pills .nav-item.show .nav-link, .nav-pills .nav-link.active:hover {
+    background: #1DA1F2;
+    color: whitesmoke;
+    opacity: 1.0;
+}
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs{
-    font-family:courier;
+.nav-tabs .nav-link, .nav-tabs {
+    font-family: courier;
+    color: #1DA1F2;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs {
+    font-family: courier;
     color: #1DA1F2;
 }
 
@@ -84,4 +119,20 @@ html, body {
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     background: #1DA1F2;
     color: whitesmoke;
-  }
+}
+
+::-webkit-scrollbar {
+    width: 0.7rem;
+    margin: 0.5em;
+    margin-right: 1em;
+}
+
+::-webkit-scrollbar-track {
+    background: white !important;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px !important;
+    margin: 0.3em !important;
+    background: lightgray !important;
+}

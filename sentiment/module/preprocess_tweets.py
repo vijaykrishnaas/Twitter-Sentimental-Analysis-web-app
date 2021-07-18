@@ -5,6 +5,11 @@ import nltk
 from nltk.corpus import stopwords
 # nltk.download('stopwords')
 
+from channels.layers import get_channel_layer
+
+async def send_message(status):
+    channel_layer = get_channel_layer()
+    await channel_layer.group_send("status", {"type": "status.update", "text": status})
 
 stop_words = set(stopwords.words("english"))
 
@@ -87,7 +92,7 @@ def get_hashtags(tweet):
     return re.findall(r'\B#\w*[a-zA-Z]+\w*', tweet)
 
 
-def preprocess_tweets(raw_tweets):
+async def preprocess_tweets(raw_tweets):
     """
     A Helper function which takes raw tweets and normalizes it to perform sentiment analysis.
 
@@ -118,4 +123,7 @@ def preprocess_tweets(raw_tweets):
     # normalizing retrieved tweets
     df["processed_tweet"] = df["raw_tweet"].apply(normalize_tweets)
     print("Preprocessing Tweets successful!")
+    status = {"statusMsg": "Preprocessing Tweets successful",
+              "step": "2", "total": "5"}
+    await send_message(status)
     return (df, hashtags_count)
