@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sentiment'
+    'channels',
+    'sentiment',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'twitterSentimentApp.urls'
+
+ASGI_APPLICATION = "twitterSentimentApp.asgi.application"
 
 TEMPLATES = [
     {
@@ -69,6 +72,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'twitterSentimentApp.wsgi.application'
+
+# Channel layers
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     }
+# }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Database
