@@ -7,6 +7,11 @@ consumer_secret = os.environ.get("CONSUMER_SECRET")
 access_token = os.environ.get("ACCESS_TOKEN")
 access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
 
+from channels.layers import get_channel_layer
+
+async def send_message(status):
+    channel_layer = get_channel_layer()
+    await channel_layer.group_send("status", {"type": "status.update", "text": status})
 
 def auth():
     """
@@ -61,7 +66,7 @@ def isUnderLimit(api):
     return limit
 
 
-def retrieve_tweets(keyword, tillDate):
+async def retrieve_tweets(keyword, tillDate):
     """
     A Helper function which retrieves recent tweets matching the user's keyword.
 
@@ -87,6 +92,9 @@ def retrieve_tweets(keyword, tillDate):
                 raw_tweets = API.search(
                     keyword+" -filter:retweets", count=100, lang='en', until=tillDate, tweet_mode="extended")
             print("Retrieved tweets successfully!")
+            status = {"statusMsg": "Retrieved tweets successfully",
+                      "step": "1", "total": "5"}
+            await send_message(status)
             return raw_tweets
         except:
             print("Error: Can't able to Search")
@@ -94,4 +102,4 @@ def retrieve_tweets(keyword, tillDate):
         return HttpResponse("Server is Busy! Please kindly search after 15 minutes")
 
 
-API = auth()
+# API = auth()

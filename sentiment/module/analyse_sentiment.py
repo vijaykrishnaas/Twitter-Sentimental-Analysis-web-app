@@ -3,6 +3,12 @@ import os
 import pandas as pd
 from joblib import load
 
+from channels.layers import get_channel_layer
+
+async def send_message(status):
+    channel_layer = get_channel_layer()
+    await channel_layer.group_send("status", {"type": "status.update", "text": status})
+
 # Get the current working directory
 cwd = os.getcwd()
 
@@ -51,7 +57,7 @@ def polarize(tweet):
     return pd.Series([blob.sentiment.subjectivity, blob.sentiment.polarity])
 
 
-def analyse_sentiment(df):
+async def analyse_sentiment(df):
     """
     A Helper function which takes a dataFrame containing processed data and performs sentimental analysis.
 
@@ -70,4 +76,7 @@ def analyse_sentiment(df):
     df[["subjectivity", "polarity"]] = df["processed_tweet"].apply(polarize)
     df[["sentiment", "Analysis"]] = df["processed_tweet"].apply(predict)
     print("Tweet Analysis Completed!")
+    status = {"statusMsg": "Tweet Analysis Completed",
+              "step": "3", "total": "5"}
+    await send_message(status)
     return (df, df.to_dict('records'))

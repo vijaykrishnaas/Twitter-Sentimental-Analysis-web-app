@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import json
+import asyncio
 
 # import Main Module
-from .module.main import getDateList, processSearchQuery, export
+from .module.main import getDateList, processSearchQuery, export, saveSearchQuery
 
 
 def index(request):
@@ -13,7 +14,8 @@ def index(request):
 
 
 def searchQuery(request):
-    result = processSearchQuery(request)
+    result = asyncio.run(processSearchQuery(request))
+    saveSearchQuery(request)
     return render(request, 'sentiment/results.html', result)
 
 

@@ -1,345 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
-    {% load static %}  
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'sentiment/img/favicon/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/mystyle.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'sentiment/icons-1.4.0/font/bootstrap-icons.css' %}">
-    <script type="text/javascript" src="{% static 'sentiment/js/results.js' %}"></script>
-    <script src="{% static 'sentiment/js/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/jquery-3.6.0.min.js' %}"></script>
     <script src="{% static 'sentiment/js/popper.min.js' %}"></script>
-    <script src="{% static 'sentiment/js/bootstrap.min.js' %}"></script>  
+    <script src="{% static 'sentiment/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'sentiment/js/plotly-latest.min.js' %}"></script>
     <script src="{% static 'sentiment/js/html2pdf.bundle.js' %}"></script>
+    <script type="text/javascript" src="{% static 'sentiment/js/results.js' %}"></script>
     <!-- <script src="{% static 'sentiment/js/jspdf.min.js' %}"></script> -->
 
     <!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
 </head>
 
-<body style="height: 100vh;">
-    <header class="p-auto">
-        <nav class="navbar navbar-expand-lg navbar-dark my_background">
-            <a class="navbar-brand" href="{% url 'sentiment:home' %}"> <i class="bi bi-twitter pr-2"></i>Twitter Sentiment Analysis</a>
-            <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+<body style="max-width:100vw;max-height:95vh;">
+    <header class="invisible">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top my_background">
+            <a class="navbar-brand" href="{% url 'sentiment:home' %}"> <i class="bi bi-twitter h4 pr-2"></i>Twitter
+                Sentiment Analysis</a>
+            <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav"
+                aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div id="my-nav" class="collapse navbar-collapse ">
                 <ul class="navbar-nav ml-auto pr-3">
                     <li class="nav-item my_hover">
-                        <a class="nav-link" href="{% url 'sentiment:home' %}" tabindex="-1"><i class="bi bi-house-fill pr-1"></i>Home</a>
+                        <a class="nav-link" href="{% url 'sentiment:home' %}" tabindex="-1"><i
+                                class="bi bi-house-fill pr-1"></i>Home</a>
                     </li>
                     <li class="nav-item my_hover">
-                        <a class="nav-link" href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalCenter" tabindex="-1"><i class="bi bi-journal-text pr-1"></i>GuideLines</a>
-                    </li>  
+                        <a class="nav-link" href="javascript:void(0)" data-toggle="modal"
+                            data-target="#exampleModalCenter" tabindex="-1"><i
+                                class="bi bi-journal-text pr-1"></i>GuideLines</a>
+                    </li>
                 </ul>
             </div>
         </nav>
     </header>
-    <div id="loading" class="preloader">
-        <img class="animated-gif" src="{% static 'sentiment/img/loadingimage.gif' %}" alt="">
-        <p class="blockquote">Loading...</p>
-    </div>
-    <div id="content" style="display: none;">
-        <main class="p-auto">
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <main class="p-auto" style="padding-top:8vh;min-height: 90vh;">
+        <div id="loading" class="preloader">
+            <img class="animated-gif" src="{% static 'sentiment/img/loadingimage.gif' %}" alt="">
+            <p class="blockquote">Loading Results</p>
+        </div>
+        <div id="content" style="display: none; overflow-y: unset;">
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header text-light my_background">
-                      <h5 class="modal-title" id="exampleModalLongTitle">SENTIMENT ANALYSIS ON TWITTER DATA USING
-                        MACHINE LEARNING ALGORITHMS</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body bg-light">
-                        <h4 class="font-italic">Hello, from Team!</h4>
-                        <p class="lead text-justify">With the improvement of web technology and its evolution, there is a huge volume of data
-                            current in the web for internet users and a lot of data is generated too. Internet has become a
-                            platform for online learning, exchanging feelings and sharing opinions. Feature extractors and
-                            different Machine Learning Classifiers are used here. The unigrams and feature extractors are
-                            unigrams, with weighted decisive and pesimisive keywords. A framework is planned that
-                            separates feature extractors and classifiers as a pair of components. It has been practical that
-                            people currently tend to look upon evaluations of products which are available online before they
-                            buy them. And for several businesses, the online belief decides the success or failure of their
-                            product. Thus, Sentiment Analysis plays an significant role in businesses. Businesses also wish
-                            to extract sentiment from the connected reviews in order to progress their products and in turn
-                            their status and help in customer satisfaction. Semantics: The comprehensive sentiment of a
-                            tweet is classified by the algorithms. Semantic role labeler can be used which shows which noun
-                            is allied with the verb and therefore the classification occurs.
+                    <div class="modal-content">
+                        <div class="modal-header text-light my_background">
+                            <h5 class="modal-title" id="exampleModalLongTitle">SENTIMENT ANALYSIS ON TWITTER DATA USING
+                                MACHINE LEARNING ALGORITHMS</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body bg-light">
+                            <h4 class="font-italic">Hello, from Team!</h4>
+                            <p class="lead text-justify">With the improvement of web technology and its evolution, there
+                                is a huge volume of data
+                                current in the web for internet users and a lot of data is generated too. Internet has
+                                become a
+                                platform for online learning, exchanging feelings and sharing opinions. Feature
+                                extractors and
+                                different Machine Learning Classifiers are used here. The unigrams and feature
+                                extractors are
+                                unigrams, with weighted decisive and pesimisive keywords. A framework is planned that
+                                separates feature extractors and classifiers as a pair of components. It has been
+                                practical that
+                                people currently tend to look upon evaluations of products which are available online
+                                before they
+                                buy them. And for several businesses, the online belief decides the success or failure
+                                of their
+                                product. Thus, Sentiment Analysis plays an significant role in businesses. Businesses
+                                also wish
+                                to extract sentiment from the connected reviews in order to progress their products and
+                                in turn
+                                their status and help in customer satisfaction. Semantics: The comprehensive sentiment
+                                of a
+                                tweet is classified by the algorithms. Semantic role labeler can be used which shows
+                                which noun
+                                is allied with the verb and therefore the classification occurs.
                             </p>
+                        </div>
+                        <div class="modal-footer my_background">
+                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                    <div class="modal-footer my_background">
-                      <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
                 </div>
-              </div>
-                <div class="row">
-                    <div class="col-2 bg-light">
-                        <nav class="navbar">
-                            <ul class="nav nav-pills flex-column pt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <li class="nav-item pb-1"> <a class="nav-link font-weight-bold active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-results-home" role="tab" aria-controls="v-pills-results-home" aria-selected="true"><i class="bi bi-pie-chart-fill m-auto pr-2"></i>Results</a></li>
-                                <!-- <li class="nav-item"><a class="nav-link" id="v-pills-tweets-tab" data-toggle="pill" href="#v-pills-retrieved-tweets" role="tab" aria-controls="v-pills-retrieved-tweets" aria-selected="false">Retrieved Tweets</a></li> -->
-                                <li class="nav-item pb-1"><a class="nav-link font-weight-bold" id="v-pills-wordtag-tab" data-toggle="pill" href="#v-pills-wordtag" role="tab" aria-controls="v-pills-wordtag" aria-selected="false"><i class="bi bi-tags-fill pr-2"></i>Word Tags</a></li>
-                                <li class="nav-item pb-1"><a class="nav-link font-weight-bold" id="v-pills-timeline-tab" data-toggle="pill" href="#v-pills-timeline" role="tab" aria-controls="v-pills-timeline" aria-selected="false"><i class="bi bi-bar-chart-fill pr-2"></i>Tweets TimeLine</a></li>
-                                <li class="nav-item pb-1"><a class="nav-link font-weight-bold" id="v-pills-hashtag-count-tab" data-toggle="pill" href="#v-pills-hashtag-count" role="tab" aria-controls="v-pills-hashtag-count" aria-selected="false"><i class="bi bi-hash pr-1"></i>Count</a></li>
-                                <li class="nav-item pb-1"><a class="nav-link font-weight-bold" id="v-pills-subjectivity-tab" data-toggle="pill" href="#v-pills-subjectivity" role="tab" aria-controls="v-pills-subjectivity" aria-selected="false"><i class="bi bi-graph-up pr-1"></i>subjectivity</a></li>
-                                <li class="nav-item pb-1"><a class="nav-link font-weight-bold" id="v-pills-positive-tweets-tab" data-toggle="pill" href="#v-pills-positive-tweets" role="tab" aria-controls="v-pills-positive-tweets" aria-selected="false"><i class="bi bi-chat-square-text-fill pr-2"></i>Positive Tweets</a></li>
-                                <li class="nav-item pb-1"><a class="nav-link font-weight-bold" id="v-pills-negative-tweets-tab" data-toggle="pill" href="#v-pills-negative-tweets" role="tab" aria-controls="v-pills-negative-tweets" aria-selected="false"><i class="bi bi-chat-square-text-fill pr-2"></i>Negative Tweets</a></li>
-                                <li class="nav-item pb-1"><a class="nav-link font-weight-bold" id="v-pills-neutral-tweets-tab" data-toggle="pill" href="#v-pills-neutral-tweets" role="tab" aria-controls="v-pills-neutral-tweets" aria-selected="false"><i class="bi bi-chat-square-text-fill pr-2"></i>Neutral Tweets</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-    
-                    <div class="col-10">
-                        <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-results-home" role="tabpanel" aria-labelledby="v-pills-results-home-tab">
-                                <div class="container mt-3">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            {% if date %}
-                                                <h3>Search Result for: "{{keyword}}" before {{date}}</h3>
-                                            {% else %}
-                                            <h3>Search Result for: "{{keyword}}"</h3>
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="m-1 d-flex flex-row justify-content-end align-self-center">
-                                                <button type="button" class="btn export_button" onclick='export_pdf()'>
-                                                    <i class="bi bi-download"></i>
-                                                    Export 
-                                                </button>
-                                            </div>
+            </div>
+
+            <div class="d-flex flex-row">
+                <div class="bg-light shadow-lg" style="position:fixed; min-height: 90vh; width:16vw">
+                    <nav class="navbar pt-4">
+                        <ul class="nav nav-pills flex-column pt-3" id="myTab" role="tablist"
+                            aria-orientation="vertical">
+                            <li class="nav-item pb-2"> <a class="nav-link font-weight-bold active" id="v-pills-home-tab"
+                                    data-toggle="pill" href="#v-pills-results-home" role="tab"
+                                    aria-controls="v-pills-results-home" aria-selected="true"><i
+                                        class="bi bi-pie-chart-fill m-auto pr-2"></i>Results</a></li>
+                            <!-- <li class="nav-item"><a class="nav-link" id="v-pills-tweets-tab" data-toggle="pill" href="#v-pills-retrieved-tweets" role="tab" aria-controls="v-pills-retrieved-tweets" aria-selected="false">Retrieved Tweets</a></li> -->
+                            <li class="nav-item pb-2"><a class="nav-link font-weight-bold" id="v-pills-wordtag-tab"
+                                    data-toggle="pill" href="#v-pills-wordtag" role="tab"
+                                    aria-controls="v-pills-wordtag" aria-selected="false"><i
+                                        class="bi bi-tags-fill pr-2"></i>Word Tags</a></li>
+                            <li class="nav-item pb-2"><a class="nav-link font-weight-bold" id="v-pills-timeline-tab"
+                                    data-toggle="pill" href="#v-pills-timeline" role="tab"
+                                    aria-controls="v-pills-timeline" aria-selected="false"><i
+                                        class="bi bi-bar-chart-fill pr-2"></i>Tweets TimeLine</a></li>
+                            <li class="nav-item pb-2"><a class="nav-link font-weight-bold"
+                                    id="v-pills-hashtag-count-tab" data-toggle="pill" href="#v-pills-hashtag-count"
+                                    role="tab" aria-controls="v-pills-hashtag-count" aria-selected="false"><i
+                                        class="bi bi-hash pr-1"></i>Count</a></li>
+                            <li class="nav-item pb-2"><a class="nav-link font-weight-bold" id="v-pills-subjectivity-tab"
+                                    data-toggle="pill" href="#v-pills-subjectivity" role="tab"
+                                    aria-controls="v-pills-subjectivity" aria-selected="false"><i
+                                        class="bi bi-graph-up pr-1"></i>subjectivity</a></li>
+                            <li class="nav-item pb-2"><a class="nav-link font-weight-bold"
+                                    id="v-pills-positive-tweets-tab" data-toggle="pill" href="#v-pills-positive-tweets"
+                                    role="tab" aria-controls="v-pills-positive-tweets" aria-selected="false"><i
+                                        class="bi bi-chat-square-text-fill pr-2"></i>Positive Tweets</a></li>
+                            <li class="nav-item pb-2"><a class="nav-link font-weight-bold"
+                                    id="v-pills-negative-tweets-tab" data-toggle="pill" href="#v-pills-negative-tweets"
+                                    role="tab" aria-controls="v-pills-negative-tweets" aria-selected="false"><i
+                                        class="bi bi-chat-square-text-fill pr-2"></i>Negative Tweets</a></li>
+                            <li class="nav-item pb-2"><a class="nav-link font-weight-bold"
+                                    id="v-pills-neutral-tweets-tab" data-toggle="pill" href="#v-pills-neutral-tweets"
+                                    role="tab" aria-controls="v-pills-neutral-tweets" aria-selected="false"><i
+                                        class="bi bi-chat-square-text-fill pr-2"></i>Neutral Tweets</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div style="width: 80vw; margin-left: 20vw;">
+                    <div class="tab-content shadow pt-4" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-results-home" role="tabpanel"
+                            aria-labelledby="v-pills-results-home-tab">
+                            <div class="container mt-3">
+                                <div class="row">
+                                    <div class="col-10">
+                                        {% if date %}
+                                        <h3>Search Result for: "{{keyword}}" before {{date}}</h3>
+                                        {% else %}
+                                        <h3>Search Result for: "{{keyword}}"</h3>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="m-1 d-flex flex-row justify-content-end align-self-center">
+                                            <button type="button" class="btn export_button" onclick='export_pdf()'>
+                                                <i class="bi bi-download"></i>
+                                                Export
+                                            </button>
                                         </div>
                                     </div>
+                                </div>
                                 <div id="sentiment-chart">
                                     {{senti_chart | safe}}
                                 </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-retrieved-tweets" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                <table class="table table-light table-hover table-responsive">
-                                    <thead class="my_background">
-                                        <th>Raw Tweet</th>
-                                        <th>Processed Tweet</th>
-                                        <th>Subjectivity</th>
-                                        <th>Polarity</th>
-                                        <th>Sentiment Analysis</th>
-                                    </thead> 
-                                    <tbody>
-                                        {% for tweet in tweets %}
-                                        <tr>
-                                            <td>{{tweet.raw_tweet}}</td>
-                                            <td>{{tweet.processed_tweet}}</td>
-                                            <td>{{tweet.subjectivity}}</td>
-                                            <td>{{tweet.polarity}}</td>
-                                            <td>{{tweet.sentiment}}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-    
-                            <div class="tab-pane fade" id="v-pills-wordtag" role="tabpanel" aria-labelledby="v-pills-wordtag-tab">
-                                <div class="mt-3">
-    
-                                    <ul class="nav nav-tabs" id="wordtag-tab" role="tablist">
-                                        <li class="nav-item">
-                                        <a class="nav-link font-weight-bold active" id="positive-wordtag-tab" data-toggle="tab" href="#positive-wordtag" role="tab" aria-controls="positive-wordtag" aria-selected="true">Positive WordTag</a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a class="nav-link font-weight-bold" id="negative-wordtag-tab" data-toggle="tab" href="#negative-wordtag" role="tab" aria-controls="negative-wordtag" aria-selected="false">Negative WordTag</a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a class="nav-link font-weight-bold" id="neutral-wordtag-tab" data-toggle="tab" href="#neutral-wordtag" role="tab" aria-controls="neutral-wordtag" aria-selected="false">Neutral WordTag</a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="positive-wordtag" role="tabpanel" aria-labelledby="positive-wordtag-tab">
-                                            <div class="container mt-4 position-absolute" style="text-align:center;" id="positive-word-tags">
-                                                {{word_tags.positive | safe}}
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="negative-wordtag" role="tabpanel" aria-labelledby="negative-wordtag-tab">
-                                            <div class="container mt-4 position-absolute" style="text-align:center;" id="negative-word-tags"> 
-                                                {{word_tags.negative | safe}} 
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="neutral-wordtag" role="tabpanel" aria-labelledby="neutral-wordtag-tab">
-                                            <div class="container mt-4 position-absolute" style="text-align:center;" id="neutral-word-tags">
-                                                {{word_tags.neutral | safe}} 
-                                            </div>
-                                        </div>
-                                    </div>
-                        
-                                    
-                                </div>                     
-                            </div>
-    
-                            <div class="tab-pane fade" id="v-pills-timeline" role="tabpanel" aria-labelledby="v-pills-timeline-tab">
-    
-                                <div class="mt-3">
-    
-                                    <ul class="nav nav-tabs" id="timeline-tab" role="tablist">
-                                        <li class="nav-item">
-                                        <a class="nav-link font-weight-bold active" id="timeline-5min-tab" data-toggle="tab" href="#timeline-5min" role="tab" aria-controls="timeline-5min" aria-selected="true">Frequency - 5 Minutes</a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a class="nav-link font-weight-bold" id="timeline-10min-tab" data-toggle="tab" href="#timeline-10min" role="tab" aria-controls="timeline-10min" aria-selected="false">Frequency - 10 Minutes</a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a class="nav-link font-weight-bold" id="timeline-15min-tab" data-toggle="tab" href="#timeline-15min" role="tab" aria-controls="timeline-15min" aria-selected="false">Frequency - 15 Minutes</a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content" id="myTabContent1">
-                                        <div class="tab-pane fade show active" id="timeline-5min" role="tabpanel" aria-labelledby="timeline-5min-tab">
-                                            <div class="container mt-4" style="text-align:center;" id="timeline-chart-5minutes">
-                                                {{timeline_chart.timeline_5min | safe}}
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="timeline-10min" role="tabpanel" aria-labelledby="timeline-10min-tab">
-                                            <div class="container mt-4" style="text-align:center;" id="timeline-chart-10minutes"> 
-                                                {{timeline_chart.timeline_10min | safe}} 
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="timeline-15min" role="tabpanel" aria-labelledby="timeline-15min-tab">
-                                            <div class="container mt-4" style="text-align:center;" id="timeline-chart-15minutes">
-                                                {{timeline_chart.timeline_15min | safe}} 
-                                            </div>
-                                        </div>
-                                    </div>
-                        
-                                    
-                                </div>                     
-    
-                            </div>
-                            
-                            <div class="tab-pane fade" id="v-pills-hashtag-count" role="tabpanel" aria-labelledby="v-pills-hashtag-count-tab">
-                                <div class="container mt-3" id="hashtag" style="text-align:center;">
-                                {{hashtag_chart | safe}}
-                                </div>
-                            </div>
-    
-                            <div class="tab-pane fade" id="v-pills-subjectivity" role="tabpanel" aria-labelledby="v-pills-subjectivity-tab">
-                                <div class="container mt-3" id="subject-chart">
-                                    {{subject_chart | safe}}
-                                </div>
-                            </div>
-    
-                            <div class="tab-pane fade" id="v-pills-positive-tweets" role="tabpanel" aria-labelledby="v-pills-positive-tweets-tab">
-                                <div class="m-1 d-flex flex-row justify-content-end align-self-center">
-                                    <button type="button" class="btn export_button mr-2" onclick='export_pdf("positive-tweets")'>
-                                        <i class="bi bi-file-earmark-text"></i>
-                                           Export as PDF
-                                    </button>
-                                    <button type="button" class="btn export_button" onclick='export_csv("{{tweets.positive |safe | escapejs }}")'> 
-                                        <i class="bi bi-file-earmark-spreadsheet"></i>
-                                          Export as CSV 
-                                    </button>
-                                </div>
-                                <table class="table table-light table-hover table-responsive" id="positive-tweets">
-                                    <thead class="my_background">
-                                        <th>Created Time</th>
-                                        <th>Raw Tweet</th>
-                                        <th>Processed Tweet</th>
-                                        <th>Subjectivity</th>
-                                        <th>Polarity</th>
-                                        <th>Sentiment Analysis</th>
-                                    </thead> 
-                                    <tbody>
-                                        {% for tweet in tweets.positive %}
-                                        <tr>
-                                            <td>{{tweet.created_at}}</td>
-                                            <td>{{tweet.raw_tweet}}</td>
-                                            <td>{{tweet.processed_tweet}}</td>
-                                            <td>{{tweet.subjectivity}}</td>
-                                            <td>{{tweet.polarity}}</td>
-                                            <td>{{tweet.sentiment}}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-negative-tweets" role="tabpanel" aria-labelledby="v-pills-negative-tweets-tab">
-                                <div class="m-1 d-flex flex-row justify-content-end align-self-center">
-                                    <button type="button" class="btn export_button mr-2" onclick='export_pdf("negative-tweets")'> 
-                                        <i class="bi bi-file-earmark-text"></i>
-                                          Export as PDF 
-                                    </button>
-                                    <button type="button" class="btn export_button" onclick='export_csv("{{tweets.negative |safe | escapejs }}")'> 
-                                        <i class="bi bi-file-earmark-spreadsheet"></i>
-                                          Export as CSV 
-                                    </button>
-                                </div>
-                                <table class="table table-light table-hover table-responsive" id="negative-tweets">
-                                    <thead class="my_background">
-                                        <th>Created Time</th>
-                                        <th>Raw Tweet</th>
-                                        <th>Processed Tweet</th>
-                                        <th>Subjectivity</th>
-                                        <th>Polarity</th>
-                                        <th>Sentiment Analysis</th>
-                                    </thead> 
-                                    <tbody>
-                                        {% for tweet in tweets.negative %}
-                                        <tr>
-                                            <td>{{tweet.created_at}}</td>
-                                            <td>{{tweet.raw_tweet}}</td>
-                                            <td>{{tweet.processed_tweet}}</td>
-                                            <td>{{tweet.subjectivity}}</td>
-                                            <td>{{tweet.polarity}}</td>
-                                            <td>{{tweet.sentiment}}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-neutral-tweets" role="tabpanel" aria-labelledby="v-pills-neutral-tweets-tab">
-                                <div class="m-1 d-flex flex-row justify-content-end align-self-center">
-                                    <button type="button" class="btn export_button mr-2" onclick='export_pdf("neutral-tweets")'> 
-                                        <i class="bi bi-file-earmark-text"></i>
-                                        Export as PDF 
-                                    </button>
-                                    <button type="button" class="btn export_button" onclick='export_csv("{{tweets.neutral |safe | escapejs }}")'> 
-                                        <i class="bi bi-file-earmark-spreadsheet"></i>
-                                          Export as CSV 
-                                    </button>
-                                </div>
-                                <table class="table table-light table-hover table-responsive" id="neutral-tweets">
-                                    <thead class="my_background">
-                                        <th>Created Time</th>
-                                        <th>Raw Tweet</th>
-                                        <th>Processed Tweet</th>
-                                        <th>Subjectivity</th>
-                                        <th>Polarity</th>
-                                        <th>Sentiment Analysis</th>
-                                    </thead> 
-                                    <tbody>
-                                        {% for tweet in tweets.neutral %}
-                                        <tr>
-                                            <td>{{tweet.created_at}}</td>
-                                            <td>{{tweet.raw_tweet}}</td>
-                                            <td>{{tweet.processed_tweet}}</td>
-                                            <td>{{tweet.subjectivity}}</td>
-                                            <td>{{tweet.polarity}}</td>
-                                            <td>{{tweet.sentiment}}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="v-pills-retrieved-tweets" role="tabpanel"
+                            aria-labelledby="v-pills-profile-tab">
+                            <table class="table table-light table-hover table-responsive">
+                                <thead class="my_background">
+                                    <th>Raw Tweet</th>
+                                    <th>Processed Tweet</th>
+                                    <th>Subjectivity</th>
+                                    <th>Polarity</th>
+                                    <th>Sentiment Analysis</th>
+                                </thead>
+                                <tbody>
+                                    {% for tweet in tweets %}
+                                    <tr>
+                                        <td>{{tweet.raw_tweet}}</td>
+                                        <td>{{tweet.processed_tweet}}</td>
+                                        <td>{{tweet.subjectivity}}</td>
+                                        <td>{{tweet.polarity}}</td>
+                                        <td>{{tweet.sentiment}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-wordtag" role="tabpanel"
+                            aria-labelledby="v-pills-wordtag-tab">
+                            <div class="mt-3">
+
+                                <ul class="nav nav-tabs" id="wordtag-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link font-weight-bold active" id="positive-wordtag-tab"
+                                            data-toggle="tab" href="#positive-wordtag" role="tab"
+                                            aria-controls="positive-wordtag" aria-selected="true">Positive WordTag</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link font-weight-bold" id="negative-wordtag-tab" data-toggle="tab"
+                                            href="#negative-wordtag" role="tab" aria-controls="negative-wordtag"
+                                            aria-selected="false">Negative WordTag</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link font-weight-bold" id="neutral-wordtag-tab" data-toggle="tab"
+                                            href="#neutral-wordtag" role="tab" aria-controls="neutral-wordtag"
+                                            aria-selected="false">Neutral WordTag</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="positive-wordtag" role="tabpanel"
+                                        aria-labelledby="positive-wordtag-tab">
+                                        <div class="container mt-4 position-absolute" style="text-align:center;"
+                                            id="positive-word-tags">
+                                            {{word_tags.positive | safe}}
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="negative-wordtag" role="tabpanel"
+                                        aria-labelledby="negative-wordtag-tab">
+                                        <div class="container mt-4 position-absolute" style="text-align:center;"
+                                            id="negative-word-tags">
+                                            {{word_tags.negative | safe}}
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="neutral-wordtag" role="tabpanel"
+                                        aria-labelledby="neutral-wordtag-tab">
+                                        <div class="container mt-4 position-absolute" style="text-align:center;"
+                                            id="neutral-word-tags">
+                                            {{word_tags.neutral | safe}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-timeline" role="tabpanel"
+                            aria-labelledby="v-pills-timeline-tab">
+
+                            <div class="mt-3">
+
+                                <ul class="nav nav-tabs" id="timeline-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link font-weight-bold active" id="timeline-5min-tab"
+                                            data-toggle="tab" href="#timeline-5min" role="tab"
+                                            aria-controls="timeline-5min" aria-selected="true">Frequency - 5 Minutes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link font-weight-bold" id="timeline-10min-tab" data-toggle="tab"
+                                            href="#timeline-10min" role="tab" aria-controls="timeline-10min"
+                                            aria-selected="false">Frequency - 10 Minutes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link font-weight-bold" id="timeline-15min-tab" data-toggle="tab"
+                                            href="#timeline-15min" role="tab" aria-controls="timeline-15min"
+                                            aria-selected="false">Frequency - 15 Minutes</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent1">
+                                    <div class="tab-pane fade show active" id="timeline-5min" role="tabpanel"
+                                        aria-labelledby="timeline-5min-tab">
+                                        <div class="container mt-4" style="text-align:center;"
+                                            id="timeline-chart-5minutes">
+                                            {{timeline_chart.timeline_5min | safe}}
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="timeline-10min" role="tabpanel"
+                                        aria-labelledby="timeline-10min-tab">
+                                        <div class="container mt-4" style="text-align:center;"
+                                            id="timeline-chart-10minutes">
+                                            {{timeline_chart.timeline_10min | safe}}
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="timeline-15min" role="tabpanel"
+                                        aria-labelledby="timeline-15min-tab">
+                                        <div class="container mt-4" style="text-align:center;"
+                                            id="timeline-chart-15minutes">
+                                            {{timeline_chart.timeline_15min | safe}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-hashtag-count" role="tabpanel"
+                            aria-labelledby="v-pills-hashtag-count-tab">
+                            <div class="container mt-3" id="hashtag" style="text-align:center;">
+                                {{hashtag_chart | safe}}
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-subjectivity" role="tabpanel"
+                            aria-labelledby="v-pills-subjectivity-tab">
+                            <div class="container mt-3" id="subject-chart">
+                                {{subject_chart | safe}}
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade pr-5" id="v-pills-positive-tweets" role="tabpanel"
+                            aria-labelledby="v-pills-positive-tweets-tab">
+                            <div class="m-1 d-flex flex-row justify-content-end align-self-center">
+                                <button type="button" class="btn export_button mr-2"
+                                    onclick='export_pdf("positive-tweets")'>
+                                    <i class="bi bi-file-earmark-text"></i>
+                                    Export as PDF
+                                </button>
+                                <button type="button" class="btn export_button"
+                                    onclick='export_csv("{{tweets.positive |safe | escapejs }}")'>
+                                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                                    Export as CSV
+                                </button>
+                            </div>
+                            <table class="table table-light table-hover table-striped table-responsive"
+                                id="positive-tweets">
+                                <thead class="my_background">
+                                    <th>Created Time</th>
+                                    <th>Raw Tweet</th>
+                                    <th>Processed Tweet</th>
+                                    <th>Subjectivity</th>
+                                    <th>Polarity</th>
+                                    <th>Sentiment Analysis</th>
+                                </thead>
+                                <tbody>
+                                    {% for tweet in tweets.positive %}
+                                    <tr>
+                                        <td>{{tweet.created_at}}</td>
+                                        <td>{{tweet.raw_tweet}}</td>
+                                        <td>{{tweet.processed_tweet}}</td>
+                                        <td>{{tweet.subjectivity}}</td>
+                                        <td>{{tweet.polarity}}</td>
+                                        <td>{{tweet.sentiment}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade pr-5" id="v-pills-negative-tweets" role="tabpanel"
+                            aria-labelledby="v-pills-negative-tweets-tab">
+                            <div class="m-1 d-flex flex-row justify-content-end align-self-center">
+                                <button type="button" class="btn export_button mr-2"
+                                    onclick='export_pdf("negative-tweets")'>
+                                    <i class="bi bi-file-earmark-text"></i>
+                                    Export as PDF
+                                </button>
+                                <button type="button" class="btn export_button"
+                                    onclick='export_csv("{{tweets.negative |safe | escapejs }}")'>
+                                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                                    Export as CSV
+                                </button>
+                            </div>
+                            <table class="table table-light table-hover table-striped table-responsive"
+                                id="negative-tweets">
+                                <thead class="my_background">
+                                    <th>Created Time</th>
+                                    <th>Raw Tweet</th>
+                                    <th>Processed Tweet</th>
+                                    <th>Subjectivity</th>
+                                    <th>Polarity</th>
+                                    <th>Sentiment Analysis</th>
+                                </thead>
+                                <tbody>
+                                    {% for tweet in tweets.negative %}
+                                    <tr>
+                                        <td>{{tweet.created_at}}</td>
+                                        <td>{{tweet.raw_tweet}}</td>
+                                        <td>{{tweet.processed_tweet}}</td>
+                                        <td>{{tweet.subjectivity}}</td>
+                                        <td>{{tweet.polarity}}</td>
+                                        <td>{{tweet.sentiment}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade pr-5" id="v-pills-neutral-tweets" role="tabpanel"
+                            aria-labelledby="v-pills-neutral-tweets-tab">
+                            <div class="m-1 d-flex flex-row justify-content-end align-self-center">
+                                <button type="button" class="btn export_button mr-2"
+                                    onclick='export_pdf("neutral-tweets")'>
+                                    <i class="bi bi-file-earmark-text"></i>
+                                    Export as PDF
+                                </button>
+                                <button type="button" class="btn export_button"
+                                    onclick='export_csv("{{tweets.neutral |safe | escapejs }}")'>
+                                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                                    Export as CSV
+                                </button>
+                            </div>
+                            <table class="table table-light table-hover table-striped table-responsive"
+                                id="neutral-tweets">
+                                <thead class="my_background">
+                                    <th>Created Time</th>
+                                    <th>Raw Tweet</th>
+                                    <th>Processed Tweet</th>
+                                    <th>Subjectivity</th>
+                                    <th>Polarity</th>
+                                    <th>Sentiment Analysis</th>
+                                </thead>
+                                <tbody>
+                                    {% for tweet in tweets.neutral %}
+                                    <tr>
+                                        <td>{{tweet.created_at}}</td>
+                                        <td>{{tweet.raw_tweet}}</td>
+                                        <td>{{tweet.processed_tweet}}</td>
+                                        <td>{{tweet.subjectivity}}</td>
+                                        <td>{{tweet.polarity}}</td>
+                                        <td>{{tweet.sentiment}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-        </main>
-    </div>
-    <footer class="footer fixed-bottom my_background">
-        <div class="container">
-            <p class="lead text-center pt-1 text-light">Thanks for Visiting us!</p>
+                </div>
+            </div>
         </div>
+    </main>
+    <footer class="footer fixed-bottom my_background invisible">
+        <p class="lead text-center pt-1 text-light">Thanks for Visiting us!</p>
     </footer>
 </body>
+<script type="text/javascript">
+    window.onload = function () {
+        document.getElementById("loading").style.display = "none";
+        $('header').attr('style', 'visibility : visible !important');
+        $('footer').attr('style', 'visibility : visible !important');
+        $('#content').fadeIn(1000);
+    }
+    $('#myTab a').on('click', function (e) {
+        $(window).scrollTop(0);
+    })
+</script>
+
 </html>
