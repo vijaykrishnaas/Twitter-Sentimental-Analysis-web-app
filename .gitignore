@@ -4,6 +4,8 @@ venv/
 pyvenv.cfg
 db.sqlite3
 commands.txt
+dev.env
+prod.env
 sentiment/__pycache__/*.pyc
 sentiment/module/__pycache__/*.pyc
 sentiment/migrations/__pycache__/*.pyc
