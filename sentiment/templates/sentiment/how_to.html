@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How-To</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'sentiment/img/favicon/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/css/mystyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'sentiment/icons-1.4.0/font/bootstrap-icons.css' %}">
+    <script src="{% static 'sentiment/js/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/popper.min.js' %}"></script>
+    <script src="{% static 'sentiment/js/bootstrap.min.js' %}"></script>  
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark my_background">
+            <a class="navbar-brand" href="{% url 'sentiment:home' %}"><i class="bi bi-twitter h4 pr-2"></i>Twitter Sentiment Analysis</a>
+            <button class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="my-nav" class="collapse navbar-collapse ">
+                <ul class="navbar-nav ml-auto pr-3">
+                    <li class="nav-item my_hover">
+                        <a class="nav-link" href="{% url 'sentiment:home' %}" tabindex="-1"><i class="bi bi-house-fill pr-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item my_hover">
+                        <a class="nav-link" href="{% url 'sentiment:about' %}" tabindex="-1"><i class="bi bi-info-circle-fill pr-1"></i>About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="jumbotron" style="min-height: 86vh;">
+            <div class="container card bg-light p-3 pt-5">
+                <p class="h4 text-center text-muted">SENTIMENT ANALYSIS ON TWITTER DATA USING
+                    MACHINE LEARNING ALGORITHMS</p>
+                <hr class="my-4">
+                <h4 class="font-italic pl-4">Hello, from Team!</h4>
+                <p class="lead px-5 pt-2 text-justify">With the improvement of web technology and its evolution, there is a huge volume of data
+                    current in the web for internet users and a lot of data is generated too. Internet has become a
+                    platform for online learning, exchanging feelings and sharing opinions. Feature extractors and
+                    different Machine Learning Classifiers are used here. The unigrams and feature extractors are
+                    unigrams, with weighted decisive and pesimisive keywords. A framework is planned that
+                    separates feature extractors and classifiers as a pair of components. It has been practical that
+                    people currently tend to look upon evaluations of products which are available online before they
+                    buy them. And for several businesses, the online belief decides the success or failure of their
+                    product. Thus, Sentiment Analysis plays an significant role in businesses. Businesses also wish
+                    to extract sentiment from the connected reviews in order to progress their products and in turn
+                    their status and help in customer satisfaction. Semantics: The comprehensive sentiment of a
+                    tweet is classified by the algorithms. Semantic role labeler can be used which shows which noun
+                    is allied with the verb and therefore the classification occurs.
+                    </p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer fixed-bottom my_background">
+        <div class="container">
+            <p class="lead text-center pt-1 text-light">Thanks for Visiting us!</p>
+        </div>
+    </footer>
+</body>
+</html>
