@@ -1,20 +1,18 @@
+from .utils import getLogFormat, send_message
 import textblob
 import os
 import pandas as pd
 from joblib import load
 
-from channels.layers import get_channel_layer
-
-async def send_message(status):
-    channel_layer = get_channel_layer()
-    await channel_layer.group_send("status", {"type": "status.update", "text": status})
+import logging
+logger = logging.getLogger('sentiment')
 
 # Get the current working directory
 cwd = os.getcwd()
 
 # Loads the ML model
 clf = load(cwd + "\\sentiment\\MLModel\\SVMModel.joblib")
-print("ML Model Loaded!")
+logger.info(getLogFormat(text="ML Model Loaded!"))
 
 
 def predict(tweet):
@@ -75,7 +73,7 @@ async def analyse_sentiment(df):
     """
     df[["subjectivity", "polarity"]] = df["processed_tweet"].apply(polarize)
     df[["sentiment", "Analysis"]] = df["processed_tweet"].apply(predict)
-    print("Tweet Analysis Completed!")
+    logger.info(getLogFormat(text="Tweet Analysis Completed!"))
     status = {"statusMsg": "Tweet Analysis Completed",
               "step": "3", "total": "5"}
     await send_message(status)

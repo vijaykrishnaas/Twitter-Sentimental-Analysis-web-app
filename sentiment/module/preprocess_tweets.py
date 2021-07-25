@@ -1,3 +1,4 @@
+from .utils import getLogFormat, send_message
 import re
 import emoji
 import pandas as pd
@@ -5,11 +6,8 @@ import nltk
 from nltk.corpus import stopwords
 # nltk.download('stopwords')
 
-from channels.layers import get_channel_layer
-
-async def send_message(status):
-    channel_layer = get_channel_layer()
-    await channel_layer.group_send("status", {"type": "status.update", "text": status})
+import logging
+logger = logging.getLogger('sentiment')
 
 stop_words = set(stopwords.words("english"))
 
@@ -122,7 +120,7 @@ async def preprocess_tweets(raw_tweets):
     hashtags_count = pd.Series(hashtags).value_counts()
     # normalizing retrieved tweets
     df["processed_tweet"] = df["raw_tweet"].apply(normalize_tweets)
-    print("Preprocessing Tweets successful!")
+    logger.info(getLogFormat(text="Preprocessing Tweets successful!"))
     status = {"statusMsg": "Preprocessing Tweets successful",
               "step": "2", "total": "5"}
     await send_message(status)

@@ -1,3 +1,4 @@
+from .utils import getLogFormat, send_message
 import pandas as pd
 import os
 from wordcloud import WordCloud
@@ -8,14 +9,11 @@ import plotly.graph_objects as go
 import plotly.express as px
 import asyncio
 
+import logging
+logger = logging.getLogger('sentiment')
+
 # Get the current working directory
 cwd = os.getcwd()
-
-from channels.layers import get_channel_layer
-
-async def send_message(status):
-    channel_layer = get_channel_layer()
-    await channel_layer.group_send("status", {"type": "status.update", "text": status})
 
 
 async def generate(df, hashtags_count):
@@ -35,27 +33,31 @@ async def generate(df, hashtags_count):
     """
     # Main Function
     html_pie = generate_pie_chart(df)
-    print("Sentiment Chart Generated!")
+    logger.info(getLogFormat(text="Sentiment Chart Generated!"))
+
     html_timebar = generate_timebar(df)
-    print("TimeLine Chart Generated!")
+    logger.info(getLogFormat(text="TimeLine Chart Generated!"))
+
     html_hashtag_count = generate_hashtag_count_chart(hashtags_count)
-    print("Hashtag count Chart Generated!")
+    logger.info(getLogFormat(text="Hashtag count Chart Generated!"))
+
     html_subject = generate_subject_chart(df)
-    print("Subjectivity-Polarity Chart Generated!")
+    logger.info(getLogFormat(text="Subjectivity-Polarity Chart Generated!"))
 
     status = {"statusMsg": "Chart Generation Completed",
               "step": "4", "total": "5"}
     await send_message(status)
 
     word_clouds = word_cloud(df)
-    print("Word Cloud Generated!")
+    logger.info(getLogFormat(text="Word Cloud Generated!"))
 
     status = {"statusMsg": "Word Cloud Generation Completed",
               "step": "5", "total": "5"}
     await send_message(status)
 
     tweets = generate_tweets(df)
-    print("Results Generated!")
+    logger.info(getLogFormat(text="Results Generated!"))
+
     await asyncio.sleep(0.4)
 
     return (html_pie, html_timebar, html_hashtag_count, html_subject, word_clouds, tweets)
