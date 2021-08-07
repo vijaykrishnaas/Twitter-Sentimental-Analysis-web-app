@@ -42,7 +42,7 @@ function loadOnScreen(data) {
 // Socket Connection Handling 
 var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 var socketURL = ws_scheme + '://' + window.location.host + '/ws/connect/';
-var socket = new WebSocket(socketURL);
+var socket = new ReconnectingWebSocket(socketURL);
 
 // Show a connected message when the WebSocket is opened.
 socket.onopen = function (event) {
