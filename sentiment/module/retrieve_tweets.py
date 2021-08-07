@@ -1,3 +1,5 @@
+from .utils import getLogFormat, send_message
+import logging
 import tweepy
 import os
 from django.http import HttpResponse
@@ -7,11 +9,8 @@ consumer_secret = os.environ.get("CONSUMER_SECRET")
 access_token = os.environ.get("ACCESS_TOKEN")
 access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
 
-from channels.layers import get_channel_layer
+logger = logging.getLogger('sentiment')
 
-async def send_message(status):
-    channel_layer = get_channel_layer()
-    await channel_layer.group_send("status", {"type": "status.update", "text": status})
 
 def auth():
     """
@@ -33,10 +32,10 @@ def auth():
         authenticate.set_access_token(access_token, access_token_secret)
         # Creating the API object while passing in auth information
         api = tweepy.API(authenticate, wait_on_rate_limit=True)
-        print("Authentication Successful!")
+        logger.info(getLogFormat(text="Authentication Successful!"))
         return api
     except:
-        print("Error: Authentication Failed")
+        logger.error(getLogFormat(text="Error: Authentication Failed"))
 
 
 def isUnderLimit(api):
@@ -57,8 +56,10 @@ def isUnderLimit(api):
     api_limit = api.rate_limit_status()
     app_limit_status = api_limit['resources']['application']['/application/rate_limit_status']['remaining']
     search_limit_status = api_limit['resources']['search']['/search/tweets']['remaining']
-    print("Application Limit Status: ", app_limit_status)
-    print("Search Limit Status: ", search_limit_status)
+    logger.info(getLogFormat(
+        text="Application Limit Status: " + str(app_limit_status)))
+    logger.info(getLogFormat(
+        text="Search Limit Status: " + str(search_limit_status)))
 
     if(app_limit_status >= 60 and search_limit_status >= 60):
         limit = True
@@ -91,14 +92,17 @@ async def retrieve_tweets(keyword, tillDate):
                 # using Twitter API makes a keyword search
                 raw_tweets = API.search(
                     keyword+" -filter:retweets", count=100, lang='en', until=tillDate, tweet_mode="extended")
-            print("Retrieved tweets successfully!")
+
+            logger.info(getLogFormat(text="Retrieved tweets successfully!"))
             status = {"statusMsg": "Retrieved tweets successfully",
                       "step": "1", "total": "5"}
             await send_message(status)
             return raw_tweets
         except:
-            print("Error: Can't able to Search")
+            logger.error(getLogFormat(text="Error: Can't able to Search"))
     else:
+        logger.error(getLogFormat(
+            text="Server is Busy! Please kindly search after 15 minutes"))
         return HttpResponse("Server is Busy! Please kindly search after 15 minutes")
 
 

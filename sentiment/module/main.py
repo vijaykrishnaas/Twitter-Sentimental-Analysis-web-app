@@ -1,4 +1,8 @@
 import datetime as dt
+import asyncio
+
+# import util functions
+from .utils import getLogFormat, send_message
 
 # import Module Files
 from .retrieve_tweets import retrieve_tweets
@@ -10,9 +14,9 @@ from .export_results import export_csv
 # import forms
 from ..forms import SearchEntriesForm
 
-# import channels
-from channels.layers import get_channel_layer
-import asyncio
+# For Logging
+import logging
+logger = logging.getLogger('sentiment')
 
 date_list = []
 
@@ -52,11 +56,9 @@ def saveSearchQuery(request):
     form = SearchEntriesForm(data)
     if form.is_valid():
         form.save()
-
-
-async def send_message(status):
-    channel_layer = get_channel_layer()
-    await channel_layer.group_send("status", {"type": "status.update", "text": status})
+        logger.info(getLogFormat(request, text="FORM SAVED"))
+    else:
+        logger.error(getLogFormat(request, text="ERROR WHILE SAVING FORM"))
 
 
 async def processSearchQuery(request):
