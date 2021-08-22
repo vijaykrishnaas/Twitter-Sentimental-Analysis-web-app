@@ -147,7 +147,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': cwd + '\\log\\debug.log',
+            'filename': cwd + '/log/debug.log',
         },
     },
     'root': {

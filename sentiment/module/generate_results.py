@@ -230,7 +230,7 @@ def generate_word_cloud(df):
     """
     allWords = ' '.join([tweet for tweet in df['processed_tweet']])
     twitter_mask = np.array(Image.open(
-        cwd + "\\sentiment\\static\\sentiment\\img\\test1.png"))
+        cwd + "/sentiment/static/sentiment/img/test1.png"))
     wordCloud = WordCloud(background_color='white', max_words=100, mask=twitter_mask, contour_width=2.0, contour_color="#1DA1F2").generate(
         allWords).to_svg(embed_font=True, optimize_embedded_font=False, embed_image=True)
     return wordCloud

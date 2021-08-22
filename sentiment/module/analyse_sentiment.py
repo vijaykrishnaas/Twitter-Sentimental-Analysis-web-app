@@ -11,7 +11,7 @@ logger = logging.getLogger('sentiment')
 cwd = os.getcwd()
 
 # Loads the ML model
-clf = load(cwd + "\\sentiment\\MLModel\\SVMModel.joblib")
+clf = load(cwd + "/sentiment/MLModel/SVMModel.joblib")
 logger.info(getLogFormat(text="ML Model Loaded!"))
 
 
